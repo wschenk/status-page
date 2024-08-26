@@ -43,9 +43,6 @@ jobs:
           version: 9
       - name: Install dependencies
         run: pnpm install
-      - run: echo $BASE_DIR
-        env:
-          BASE_DIR: ${{ steps.pages.outputs.base_path }}
       - name: Build
         run: pnpm run build
         env:
@@ -58,3 +55,13 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+    - name: Send Inline Telegram Message
+        uses: cbrgm/telegram-github-action@v1
+        with:
+          token: ${{ secrets.TELEGRAM_TOKEN }}
+          to: ${{ secrets.TELEGRAM_CHAT_ID }}
+          message: |
+            New commit by ${{ github.actor }}!
+            Commit: ${{ github.event.head_commit.message }}
+            Repository: ${{ github.repository }}
+            View changes: https://github.com/${{ github.repository }}/commit/${{ github.sha }}
