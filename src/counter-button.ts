@@ -20,7 +20,7 @@ export class CounterButton extends LitElement {
     `;
   }
 
-  click(event:Event) {
+  click() {
     console.log("Clicked");
 this.count +=1 ;
   }
